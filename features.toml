@@ -10,7 +10,7 @@ reason = """
 This is laying the groundwork for merging coloring and parsing. It also makes token_nodes.atomic() naturally
 work with coloring, which is pretty useful on its own.
 """
-enabled = false
+enabled = true
 
 [data_processing_primitives]
 

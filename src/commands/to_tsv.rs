@@ -131,9 +131,9 @@ pub fn to_string(tagged_value: &Tagged<Value>) -> Result<String, ShellError> {
             for l in list {
                 let mut row = vec![];
                 for desc in &merged_descriptors {
-                    match l.item.get_data_by_key(&desc) {
+                    match l.item.get_data_by_key(desc[..].spanned_unknown()) {
                         Some(s) => {
-                            row.push(to_string_helper(s)?);
+                            row.push(to_string_helper(&s)?);
                         }
                         None => {
                             row.push(String::new());
