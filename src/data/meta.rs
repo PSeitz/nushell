@@ -53,6 +53,17 @@ pub struct Tagged<T> {
     pub item: T,
 }
 
+impl Tagged<String> {
+    pub fn borrow_spanned(&self) -> Spanned<&str> {
+        let span = self.tag.span;
+        self.item[..].spanned(span)
+    }
+
+    pub fn borrow_tagged(&self) -> Tagged<&str> {
+        self.item[..].tagged(self.tag.clone())
+    }
+}
+
 impl<T> HasTag for Tagged<T> {
     fn tag(&self) -> Tag {
         self.tag.clone()
@@ -113,6 +124,13 @@ impl<T> Tagged<T> {
         Tagged {
             item: self.item,
             tag: tag,
+        }
+    }
+
+    pub fn transpose(&self) -> Tagged<&T> {
+        Tagged {
+            item: &self.item,
+            tag: self.tag.clone(),
         }
     }
 
@@ -351,6 +369,23 @@ pub fn tag_for_tagged_list(mut iter: impl Iterator<Item = Tag>) -> Tag {
 
     let first = match first {
         None => return Tag::unknown(),
+        Some(first) => first,
+    };
+
+    let last = iter.last();
+
+    match last {
+        None => first,
+        Some(last) => first.until(last),
+    }
+}
+
+#[allow(unused)]
+pub fn span_for_spanned_list(mut iter: impl Iterator<Item = Span>) -> Span {
+    let first = iter.next();
+
+    let first = match first {
+        None => return Span::unknown(),
         Some(first) => first,
     };
 

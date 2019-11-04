@@ -1,7 +1,7 @@
 use crossterm::{cursor, terminal, RawScreen};
 use crossterm::{InputEvent, KeyEvent};
 use nu::{
-    serve_plugin, AnchorLocation, CallInfo, Plugin, Primitive, ShellError, Signature, Tagged, Value,
+    serve_plugin, AnchorLocation, CallInfo, Plugin, Primitive, ShellError, Signature, Tagged, Value, outln
 };
 
 use syntect::easy::HighlightLines;
@@ -15,6 +15,7 @@ enum DrawCommand {
     DrawString(Style, String),
     NextLine,
 }
+
 struct TextView;
 
 impl TextView {
@@ -202,7 +203,7 @@ fn scroll_view_lines_if_needed(draw_commands: Vec<DrawCommand>, use_color_buffer
         }
     }
 
-    println!("");
+    outln!("");
 }
 
 fn scroll_view(s: &str) {
